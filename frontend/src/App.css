@@ -2,19 +2,17 @@
   text-align: center;
 }
 
-.header{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  background-color: #66004d;
+ .header{
+
+  background-color: #343A40;
 }
 .header a{
   color: #fff;
   text-decoration: none;
-}
-.register{
+} 
+/* .register{
   text-align:center;
-}
+} */
 .register input{
   /* display:block; */
 }

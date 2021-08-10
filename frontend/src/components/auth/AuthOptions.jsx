@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
+import { Nav, NavItem ,Button} from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import UserContext from "../../context/userContext";
+import {Link} from 'react-router-dom';
 
 function AuthOptions () {
     const { userData, setUserData } = useContext(UserContext);
@@ -15,18 +17,26 @@ function AuthOptions () {
         })
         localStorage.setItem("auth-token","");
     };
-
+ 
+    const margin={
+        marginLeft:"5%"
+          
+      }
     return (
-        <nav className="auth-options">
+        <Nav className="auth-options">
             {userData.user ? (
-                <button className="btn btn-primary mr-2" onClick={logout}>Logout</button>
+                <div>
+                <NavItem style={margin}> <Button className="btn btn-primary " onClick={logout}>Logout</Button></NavItem>
+                </div>
+               
             ) : (
                 <>
-                <button className="btn btn-primary mr-2" onClick={register}>Sign Up</button>
-                <button className="btn btn-primary mr-2" onClick={login}>Login</button>
+                <NavItem style={margin}> <Button className="btn btn-primary mr-auto" onClick={register}>Register</Button></NavItem>
+               <NavItem style={margin}>  <Button className="btn btn-primary mr-auto " onClick={login}>Login</Button></NavItem>
+              
                 </>
             )}
-        </nav>
+        </Nav>
     )
 }
 

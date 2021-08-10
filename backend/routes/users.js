@@ -11,21 +11,21 @@ router.post("/register", async (req, res) => {
     // validate
 
     if (!email || !password || !passwordCheck)
-      return res.status(400).json({ msg: "Not all fields have been entered." });
+      return res.status(400).json({ msg: "Invalid username/password" });
     if (password.length < 5)
       return res
         .status(400)
-        .json({ msg: "The password needs to be at least 5 characters long." });
+        .json({ msg: "Atleast 5 characters long" });
     if (password !== passwordCheck)
       return res
         .status(400)
-        .json({ msg: "Enter the same password twice for verification." });
+        .json({ msg: "Re-enter the password" });
 
     const existingUser = await User.findOne({ email: email });
     if (existingUser)
       return res
         .status(400)
-        .json({ msg: "An account with this email already exists." });
+        .json({ msg: "User already exists" });
 
     if (!displayName) displayName = email;
 
@@ -50,18 +50,18 @@ router.post("/login", async (req, res) => {
 
     // validate
     if (!email || !password)
-      return res.status(400).json({ msg: "Not all fields have been entered." });
+      return res.status(400).json({ msg: "Invalid Username/Password" });
 
     const user = await User.findOne({ email: email });
     if (!user)
       return res
         .status(400)
-        .json({ msg: "No account with this email has been registered." });
+        .json({ msg: "You are not registered it seems!" });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials." });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET,{expiresIn:'365d'});
     console.log("token",token);
     res.json({
       token,
@@ -101,6 +101,8 @@ router.post("/tokenIsValid", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+
 
 router.get("/", auth, async (req, res) => {
   const user = await User.findById(req.user);
